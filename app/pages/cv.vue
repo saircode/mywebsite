@@ -51,6 +51,23 @@ const experiences = [
   }
 ]
 
+const education = [
+  {
+    title: 'Licenciado en Informática y Medios Audiovisuales',
+    institution: 'Universidad de Córdoba',
+    period: '2013 – 2018',
+    description: 'Gracias a mi formación, en todos los lugares donde he trabajado, me he destacado por mi enfoque integral, liderando equipos y compartiendo mis conocimientos.'
+  }
+]
+
+const achievements = [
+  {
+    title: 'Fondo Emprender SENA',
+    year: '2020',
+    description: 'Gané la convocatoria del Fondo Emprender del SENA, lo cual ha sido fundamental para mi desarrollo en el ámbito del emprendimiento empresarial. Actualmente, soy el fundador y CEO de mi propia empresa.'
+  }
+]
+
 const skills = {
   frontend: ['Vue.js', 'Nuxt.js', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'HTML/CSS'],
   backend: ['Python', 'PHP', 'Laravel', 'Node.js', 'REST APIs'],
@@ -140,6 +157,65 @@ const skills = {
             </div>
           </article>
         </div>
+      </div>
+    </section>
+
+    <!-- Education -->
+    <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-8 flex items-center gap-3">
+        <span class="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
+          <svg class="w-5 h-5 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
+          </svg>
+        </span>
+        Formación Académica
+      </h2>
+
+      <div class="space-y-6">
+        <article
+          v-for="(edu, index) in education"
+          :key="index"
+          class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700"
+        >
+          <div class="flex flex-wrap items-start justify-between gap-4 mb-3">
+            <div>
+              <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ edu.title }}</h3>
+              <p class="text-primary-600 dark:text-primary-400 font-medium">{{ edu.institution }}</p>
+            </div>
+            <span class="text-sm text-gray-500 dark:text-gray-400">{{ edu.period }}</span>
+          </div>
+          <p class="text-gray-600 dark:text-gray-400">{{ edu.description }}</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Achievements -->
+    <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-20">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-8 flex items-center gap-3">
+        <span class="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
+          <svg class="w-5 h-5 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+          </svg>
+        </span>
+        Logros y Reconocimientos
+      </h2>
+
+      <div class="space-y-6">
+        <article
+          v-for="(achievement, index) in achievements"
+          :key="index"
+          class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700"
+        >
+          <div class="flex flex-wrap items-start justify-between gap-4 mb-3">
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ achievement.title }}</h3>
+            <span class="px-3 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300 text-sm font-medium rounded-full">
+              {{ achievement.year }}
+            </span>
+          </div>
+          <p class="text-gray-600 dark:text-gray-400">{{ achievement.description }}</p>
+        </article>
       </div>
     </section>
 
