@@ -1,4 +1,39 @@
 <script setup lang="ts">
+const cvContent = ref<HTMLElement | null>(null)
+const isGenerating = ref(false)
+
+async function downloadPDF() {
+  if (!cvContent.value || isGenerating.value) return
+
+  isGenerating.value = true
+
+  try {
+    const html2pdf = (await import('html2pdf.js')).default
+
+    // Clonar el contenido y ocultar la sección de descarga
+    const clone = cvContent.value.cloneNode(true) as HTMLElement
+    const downloadSection = clone.querySelector('[data-hide-pdf]')
+    if (downloadSection) {
+      downloadSection.remove()
+    }
+
+    const opt = {
+      margin: [10, 10, 10, 10] as [number, number, number, number],
+      filename: 'cv-sair-sanchez.pdf',
+      image: { type: 'jpeg' as const, quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: 'mm' as const, format: 'a4' as const, orientation: 'portrait' as const },
+      pagebreak: { mode: 'avoid-all' }
+    }
+
+    await html2pdf().set(opt).from(clone).save()
+  } catch (error) {
+    console.error('Error generating PDF:', error)
+  } finally {
+    isGenerating.value = false
+  }
+}
+
 const experiences = [
   {
     company: 'Shockdav',
@@ -77,11 +112,12 @@ const skills = {
 </script>
 
 <template>
-  <div class="py-20">
+  <div ref="cvContent" class="py-20">
     <!-- Header -->
     <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
       <div class="text-center">
-        <h1 class="section-title mb-4">Experiencia</h1>
+        <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-2">Sair Sánchez</h1>
+        <p class="text-xl text-primary-600 dark:text-primary-400 font-medium mb-4">Desarrollador Web Full Stack</p>
         <p class="section-subtitle max-w-2xl mx-auto">
           +6 años de experiencia desarrollando soluciones tecnológicas para empresas en diferentes países y sectores.
         </p>
@@ -290,20 +326,24 @@ const skills = {
     </section>
 
     <!-- Download CV -->
-    <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+    <section data-hide-pdf class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
       <div class="bg-gray-50 dark:bg-gray-900 rounded-xl p-8 text-center border border-gray-200 dark:border-gray-700">
         <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">¿Necesitas una versión descargable?</h3>
         <p class="text-gray-600 dark:text-gray-400 mb-6">Descarga mi CV en formato PDF para tenerlo a la mano.</p>
-        <a
-          href="/cv-sair-sanchez.pdf"
-          download
+        <button
+          @click="downloadPDF"
+          :disabled="isGenerating"
           class="btn-primary"
         >
-          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg v-if="!isGenerating" class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
-          Descargar CV
-        </a>
+          <svg v-else class="w-5 h-5 mr-2 animate-spin" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          {{ isGenerating ? 'Generando...' : 'Descargar CV' }}
+        </button>
       </div>
     </section>
   </div>
